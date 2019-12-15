@@ -2,13 +2,22 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(
+ *  "email",
+ *  message = "Un utilisateur ayant cette adresse mail existe déjà !"
+ * )
+ * @ApiResource
  */
 class User implements UserInterface
 {
@@ -16,11 +25,27 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({
+     *  "customers_read",
+     *  "invoices_read",
+     *  "invoices_subresource"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({
+     *  "customers_read",
+     *  "invoices_read",
+     *  "invoices_subresource"
+     * })
+     * @Assert\NotBlank(
+     *  message = "L'adresse mail doit être renseignée !"
+     * )
+     * @Assert\Email(
+     *  message = "{{ value }} n'est pas une adresse mail valide !"
+     * )
      */
     private $email;
 
@@ -32,16 +57,47 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(
+     *  message = "Le mot de passe doit être renseigné !"
+     * )
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({
+     *  "customers_read",
+     *  "invoices_read",
+     *  "invoices_subresource"
+     * })
+     * @Assert\NotBlank(
+     *  message = "Le prénom doit être renseigné !"
+     * )
+     * @Assert\Length(
+     *  min = 3,
+     *  minMessage = "Le prénom renseigné doit contenir au moins {{ limit }} caractères !",
+     *  max = 30,
+     *  maxMessage = "Le prénom renseigné doit contenir au maximum {{ limit }} caractères !"
+     * )
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({
+     *  "customers_read",
+     *  "invoices_read",
+     *  "invoices_subresource"
+     * })
+     * @Assert\NotBlank(
+     *  message = "Le nom de famille doit être renseigné !"
+     * )
+     * @Assert\Length(
+     *  min = 3,
+     *  minMessage = "Le nom de famille renseigné doit contenir au moins {{ limit }} caractères !",
+     *  max = 30,
+     *  maxMessage = "Le nom de famille renseigné doit contenir au maximum {{ limit }} caractères !"
+     * )
      */
     private $lastName;
 
