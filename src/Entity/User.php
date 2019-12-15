@@ -17,7 +17,13 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *  "email",
  *  message = "Un utilisateur ayant cette adresse mail existe déjà !"
  * )
- * @ApiResource
+ * @ApiResource(
+ *  normalizationContext = {
+ *      "groups" = {
+ *          "users_read"
+ *      }
+ *  }
+ * )
  */
 class User implements UserInterface
 {
@@ -28,7 +34,8 @@ class User implements UserInterface
      * @Groups({
      *  "customers_read",
      *  "invoices_read",
-     *  "invoices_subresource"
+     *  "invoices_subresource",
+     *  "users_read"
      * })
      */
     private $id;
@@ -38,7 +45,8 @@ class User implements UserInterface
      * @Groups({
      *  "customers_read",
      *  "invoices_read",
-     *  "invoices_subresource"
+     *  "invoices_subresource",
+     *  "users_read"
      * })
      * @Assert\NotBlank(
      *  message = "L'adresse mail doit être renseignée !"
@@ -68,7 +76,8 @@ class User implements UserInterface
      * @Groups({
      *  "customers_read",
      *  "invoices_read",
-     *  "invoices_subresource"
+     *  "invoices_subresource",
+     *  "users_read"
      * })
      * @Assert\NotBlank(
      *  message = "Le prénom doit être renseigné !"
@@ -87,7 +96,8 @@ class User implements UserInterface
      * @Groups({
      *  "customers_read",
      *  "invoices_read",
-     *  "invoices_subresource"
+     *  "invoices_subresource",
+     *  "users_read"
      * })
      * @Assert\NotBlank(
      *  message = "Le nom de famille doit être renseigné !"
