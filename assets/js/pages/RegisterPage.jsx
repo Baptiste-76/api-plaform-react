@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import Field from '../components/forms/Field';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { toast } from 'react-toastify';
+import Field from '../components/forms/Field';
 import usersAPI from '../services/usersAPI';
 
 const RegisterPage = ({ history }) => {
@@ -36,11 +36,13 @@ const RegisterPage = ({ history }) => {
 
         if(user.password !== user.passwordConfirm) {
             apiErrors.passwordConfirm = "Votre confirmation de mot de passe n'est pas identique à votre mot de passe original";
+            toast.error("Il y'a des erreurs dans votre formulaire ! ⚠");
         }
 
         try {
             await usersAPI.register(user);
             setErrors({});
+            toast.success("Votre inscription est réussie, vous pouvez maintenant vous connecter ! 😎");
             history.replace('/login');
             
         } catch (error) {
@@ -51,6 +53,7 @@ const RegisterPage = ({ history }) => {
                     apiErrors[violation.propertyPath] = violation.message
                 });
                 setErrors(apiErrors);
+                toast.error("Il y'a des erreurs dans votre formulaire ! ⚠");
             }
         }
     }

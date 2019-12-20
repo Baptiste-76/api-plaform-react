@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import customersAPI from '../services/customersAPI';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import TableLoader from '../components/loaders/TableLoader';
 
 const CustomersPage = props => {
 
     const [customers, setCustomers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [search, setSearch] = useState("");
+    const [loading, setLoading] = useState(true);
     const itemsPerPage = 10;
 
     // Permet de récupérer les clients
@@ -15,8 +18,9 @@ const CustomersPage = props => {
         try {
             const data = await customersAPI.findAll();
             setCustomers(data);
+            setLoading(false);
         } catch (error) {
-            console.log(error.response);
+            toast.error("Impossible de récupérer la liste des clients ! ⚠");
         }
     }
 
@@ -36,8 +40,10 @@ const CustomersPage = props => {
         // Je demande seulement ensuite la suppression en BDD (j'envoie réellement la requête)
         try {
             await customersAPI.delete(id)
+            toast.success("Le client a bien été supprimé ! ✔");
         } catch (error) {
             setCustomers(originalCustomers);
+            toast.error("La suppression du client n'a pas fonctionné ! ⚠")
         }
     }
 
@@ -85,12 +91,12 @@ const CustomersPage = props => {
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                { !loading && <tbody>
                     { paginatedCustomers.map(customer => 
                         <tr key = {customer.id}>
                             <td>{ customer.id }</td>
                             <td>
-                                <a href="#">{ customer.firstName } { customer.lastName }</a>
+                                <Link to={"/customers/" + customer.id} >{ customer.firstName } { customer.lastName }</Link>
                             </td>
                             <td>{ customer.email }</td>
                             <td>{ customer.company }</td>
@@ -99,12 +105,14 @@ const CustomersPage = props => {
                             </td>
                             <td className="text-center">{ customer.totalAmount.toLocaleString() } €</td>
                             <td>
+                                <Link to={"/customers/" + customer.id } className="btn btn-sm btn-info mr-1">Éditer</Link>
                                 <button onClick={ () => handleDelete(customer.id) } disabled={ customer.invoices.length > 0 } className="btn btn-sm btn-danger">Suprrimer</button>
                             </td>
                         </tr>
                     )}
-                </tbody>
+                </tbody> }
             </table>
+            { loading && <TableLoader /> }
 
             { itemsPerPage < filteredCustomers.length &&
                 <Pagination currentPage = { currentPage } itemsPerPage = { itemsPerPage } length = { filteredCustomers.length } onPageChanged = { handlePageChange }/>
