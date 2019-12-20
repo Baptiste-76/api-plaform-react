@@ -1,6 +1,7 @@
-import React, { useState, useContext } from 'react';
-import authAPI from '../services/authAPI';
+import React, { useContext, useState } from 'react';
+import Field from '../components/forms/Field';
 import AuthContext from '../contexts/AuthContext';
+import authAPI from '../services/authAPI';
 
 const LoginPage = ({ history }) => {
 
@@ -36,15 +37,8 @@ const LoginPage = ({ history }) => {
             <h1>Connexion à l'application</h1>
 
             <form onSubmit={ handleSubmit }>
-                <div className="form-group">
-                    <label htmlFor="username">Adresse email</label>
-                    <input value={ credentials.username } onChange = { handleChange } type="email" className={"form-control" + (error && " is-invalid")} placeholder="Adresse email de connexion" name="username" id="username"/>
-                    {error && <p className="invalid-feedback">{ error }</p>}
-                </div>
-                <div className="form-group">
-                    <label htmlFor="password">Mot de passe</label>
-                    <input value={ credentials.password } onChange = { handleChange } type="password" className="form-control" placeholder="Mot de passe" name="password" id="password"/>
-                </div>
+                <Field label="Adresse email" name="username" value={credentials.username} onChange={handleChange} placeholder="Adresse email de connexion" error={error} />
+                <Field label="Mot de passe" name="password" value={credentials.password} onChange={handleChange} type="password" />
                 <div className="form-group">
                     <button type="submit" className="btn btn-success">Je me connecte !</button>
                 </div>
