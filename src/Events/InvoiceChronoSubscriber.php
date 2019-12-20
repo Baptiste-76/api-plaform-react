@@ -38,9 +38,14 @@ class InvoiceChronoSubscriber implements EventSubscriberInterface
         $method = $event->getRequest()->getMethod();
 
         if ($invoice instanceof Invoice && $method === "POST") {
-            
-            $nextChrono = $this->repo->findNextChrono($user);
+            $invoices = $this->repo->findInvoices($user);
 
+            if (!$invoices) {
+                $nextChrono = 1;
+            } else {
+                $nextChrono = $this->repo->findNextChrono($user);
+            }
+            
             $invoice->setChrono($nextChrono);
 
             if (empty($invoice->getSentAt())) {

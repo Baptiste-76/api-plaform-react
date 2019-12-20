@@ -33,6 +33,17 @@ class InvoiceRepository extends ServiceEntityRepository
                     ->getSingleScalarResult() + 1;    
     }
 
+    public function findInvoices(User $user)
+    {
+        return $this->createQueryBuilder("i")
+                    ->select("i")
+                    ->join("i.customer", "c") 
+                    ->where("c.user = :user")
+                    ->setParameter("user", $user)
+                    ->getQuery()
+                    ->getResult();
+    }
+
     // /**
     //  * @return Invoice[] Returns an array of Invoice objects
     //  */
