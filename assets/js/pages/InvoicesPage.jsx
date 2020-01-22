@@ -95,37 +95,43 @@ const InvoicesPage = (props) => {
                 <input type="text" onChange={handleSearch} value={search} className="form-control" placeholder="Rechercher..."/>
             </div>
 
-            <table className="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Numéro</th>
-                        <th>Client</th>
-                        <th className="text-center">Date d'envoi</th>
-                        <th className="text-center">Statut</th>
-                        <th className="text-center">Montant</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                { !loading && <tbody>
-                    { paginatedInvoices.map( invoice => 
-                        <tr key = { invoice.id }>
-                            <td>{ invoice.chrono }</td>
-                            <td>
-                                <Link to={"/customers/" + invoice.customer.id} > { invoice.customer.firstName } { invoice.customer.lastName }</Link>
-                            </td>
-                            <td className="text-center">{ formatDate(invoice.sentAt) }</td>
-                            <td className="text-center">
-                                <span className={"badge badge-" + STATUS_CLASSES[invoice.status]}>{ STATUS_LABELS[invoice.status] }</span>
-                            </td>
-                            <td className="text-center">{ invoice.amount.toLocaleString() }</td>
-                            <td>
-                                <Link to={"/invoices/" + invoice.id } className="btn btn-sm btn-info mr-1">Éditer</Link>
-                                <button onClick={ () => handleDelete(invoice.id) } className="btn btn-sm btn-danger">Supprimer</button>
-                            </td>
+            <div className="table-responsive-md">
+                <table className="table table-hover table-bordered">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Client</th>
+                            <th>Date d'envoi</th>
+                            <th>Statut</th>
+                            <th>Montant</th>
+                            <th></th>
                         </tr>
-                    )}
-            </tbody> }
-            </table>
+                    </thead>
+                    { !loading && <tbody>
+                        { paginatedInvoices.map( invoice => 
+                            <tr key = { invoice.id }>
+                                <td>{ invoice.chrono }</td>
+                                <td>
+                                    <Link to={"/customers/" + invoice.customer.id} > { invoice.customer.firstName } { invoice.customer.lastName }</Link>
+                                </td>
+                                <td>{ formatDate(invoice.sentAt) }</td>
+                                <td>
+                                    <span className={"badge badge-pill badge-" + STATUS_CLASSES[invoice.status]}>{ STATUS_LABELS[invoice.status] }</span>
+                                </td>
+                                <td>{ invoice.amount.toLocaleString() }</td>
+                                <td>
+                                    <Link to={"/invoices/" + invoice.id } className="btn btn-sm btn-info mx-1 my-1">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </Link>
+                                    <button onClick={ () => handleDelete(invoice.id) } className="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                </tbody> }
+                </table>
+            </div>
             { loading && <TableLoader /> }
 
             <Pagination currentPage = {currentPage} itemsPerPage = { itemsPerPage} onPageChanged = { handlePageChange} length = { filteredInvoices.length } />

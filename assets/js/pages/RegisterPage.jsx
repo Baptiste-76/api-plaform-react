@@ -69,7 +69,10 @@ const RegisterPage = ({ history }) => {
                 <Field name="passwordConfirm" label="Confirmation du mot de passe" placeholder="Veuillez taper une seconde fois votre mot de passe" error={errors.passwordConfirm} value={user.passwordConfirm} 
                 onChange={handleChange} type="password"/>
                 <div className="form-group">
-                    <button type="submit" className="btn btn-success">Valider mon inscription</button>
+                    <button type="submit" className="btn btn-success">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        Valider mon inscription
+                    </button>
                     <Link to="/login" className="btn btn-link">J'ai déjà un compte</Link>
                 </div>
             </form>

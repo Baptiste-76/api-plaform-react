@@ -43,7 +43,10 @@ const LoginPage = ({ history }) => {
                 <Field label="Adresse email" name="username" value={credentials.username} onChange={handleChange} placeholder="Adresse email de connexion" error={error} />
                 <Field label="Mot de passe" name="password" value={credentials.password} onChange={handleChange} type="password" />
                 <div className="form-group">
-                    <button type="submit" className="btn btn-success">Je me connecte !</button>
+                    <button type="submit" className="btn btn-success">
+                        <i class="fas fa-arrow-right mr-2"></i>
+                        Je me connecte
+                    </button>
                 </div>
             </form>
         </>

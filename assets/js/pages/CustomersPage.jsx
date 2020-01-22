@@ -79,39 +79,45 @@ const CustomersPage = props => {
                 <input type="text" onChange={handleSearch} value={search} className="form-control" placeholder="Rechercher..."/>
             </div>
 
-            <table className="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Client</th>
-                        <th>Email</th>
-                        <th>Entreprise</th>
-                        <th className="text-center">Factures</th>
-                        <th className="text-center">Montant total</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                { !loading && <tbody>
-                    { paginatedCustomers.map(customer => 
-                        <tr key = {customer.id}>
-                            <td>{ customer.id }</td>
-                            <td>
-                                <Link to={"/customers/" + customer.id} >{ customer.firstName } { customer.lastName }</Link>
-                            </td>
-                            <td>{ customer.email }</td>
-                            <td>{ customer.company }</td>
-                            <td className="text-center">
-                                <span className="badge badge-info">{ customer.invoices.length }</span>
-                            </td>
-                            <td className="text-center">{ customer.totalAmount.toLocaleString() } €</td>
-                            <td>
-                                <Link to={"/customers/" + customer.id } className="btn btn-sm btn-info mr-1">Éditer</Link>
-                                <button onClick={ () => handleDelete(customer.id) } disabled={ customer.invoices.length > 0 } className="btn btn-sm btn-danger">Suprrimer</button>
-                            </td>
+            <div className="table-responsive-md">
+                <table className="table table-hover table-bordered">
+                    <thead className="thead-dark">
+                        <tr>
+                            <th>Id</th>
+                            <th>Client</th>
+                            <th>Email</th>
+                            <th>Entreprise</th>
+                            <th>Factures</th>
+                            <th>Montant total</th>
+                            <th></th>
                         </tr>
-                    )}
-                </tbody> }
-            </table>
+                    </thead>
+                    { !loading && <tbody>
+                        { paginatedCustomers.map(customer => 
+                            <tr key = {customer.id}>
+                                <td>{ customer.id }</td>
+                                <td>
+                                    <Link to={"/customers/" + customer.id} >{ customer.firstName } { customer.lastName }</Link>
+                                </td>
+                                <td>{ customer.email }</td>
+                                <td>{ customer.company }</td>
+                                <td>
+                                    <span className="badge badge-info badge-pill">{ customer.invoices.length }</span>
+                                </td>
+                                <td>{ customer.totalAmount.toLocaleString() } €</td>
+                                <td>
+                                    <Link to={"/customers/" + customer.id } className="btn btn-sm btn-info mx-1 my-1">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </Link>
+                                    <button onClick={ () => handleDelete(customer.id) } disabled={ customer.invoices.length > 0 } className="btn btn-sm btn-danger">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                    </tbody> }
+                </table>
+            </div>
             { loading && <TableLoader /> }
 
             { itemsPerPage < filteredCustomers.length &&

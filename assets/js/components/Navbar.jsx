@@ -16,7 +16,7 @@ const Navbar = ({ history }) => {
     }
 
     return ( 
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-md navbar-dark bg-dark">
         <NavLink className="navbar-brand" to="/">SymReact !</NavLink>
         <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
@@ -35,7 +35,7 @@ const Navbar = ({ history }) => {
                 { (!isAuthenticated && (
                     <>
                         <li className="nav-item">
-                            <NavLink to="/register" className="nav-link">Inscription</NavLink>
+                            <NavLink to="/register" className="btn btn-info mr-2">Inscription</NavLink>
                         </li>
                         <li className="nav-item">
                             <NavLink to="/login" className="btn btn-success">Connexion</NavLink>
